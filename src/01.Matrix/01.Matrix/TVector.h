@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+
 template <typename VarType>
 class TVector {
 protected:
@@ -23,17 +24,40 @@ public:
 	VarType Length()const;
 	int Size()const;
 	int StartIndex()const;
-	friend std::ostream& operator<< (const ostream&, const TVector&);
-	friend std::istream operator>> (const std::istream&, TVector&);
-	ValType& operator[] (int index);
+
+	void Fill(VarType, VarType);
+
+	friend std::ostream& operator << (std::ostream& s, const TVector& v) {
+		if (v.size <= 0) throw (std::string)"Wrong dimension";
+		s << "[";
+		for (int i = 0; i < v.size; i++) {
+			s << v.elems[i] << ' ';
+		}
+		s << "]";
+		return s;
+	}
+	
+	friend std::istream& operator >> (std::istream& s, TVector& v) {
+		if (v.size <= 0) throw (std::string)"Wrong dimension";
+		for (int i = 0; i < v.size; i++) {
+			std::cout << "Enter " << i + 1 << " element: ";
+			s >> v.elems[i];
+			std::cout << std::endl;
+		}
+		return s;
+	}
+
+	const VarType& operator [] (int index) const;
+	VarType& operator [] (int index);
 };
 
 template<typename VarType>
 TVector<VarType>::TVector(int size, int startIndex)
 {
+	if (size <= 0) throw (std::string)"Invalid size";
 	this->size = size;
 	this->startIndex = startIndex;
-	elems = new TypeVar[size];
+	elems = new VarType[size];
 }
 
 template<typename VarType>
@@ -41,7 +65,7 @@ TVector<VarType>::TVector(const TVector<VarType>& V)
 {
 	size = V.size;
 	startIndex = V.startIndex;
-	elems = new TypeVar[size];
+	elems = new VarType[size];
 	for (int i = 0; i < size; i++) {
 		elems[i] = V.elems[i];
 	}
@@ -66,7 +90,7 @@ bool TVector<VarType>::operator==(const TVector<VarType>& V) const
 }
 
 template<typename VarType>
- bool TVector<VarType>::operator!=(const TVector<VarType> &V) const
+bool TVector<VarType>::operator!=(const TVector<VarType>& V) const
 {
 	if (size != V.size) return true;
 	for (int i = 0; i < size; i++) {
@@ -75,98 +99,123 @@ template<typename VarType>
 	return false;
 }
 
- template<typename VarType>
- TVector<VarType> TVector<VarType>::operator+(VarType c)
- {
-	 TVector<VarType> tmp(*this);
-	 for (int i = 0; i < size; i++) {
-		 tmp.elems[i] += c;
-	 }
-	 return tmp;
- }
+template<typename VarType>
+TVector<VarType> TVector<VarType>::operator+(VarType c)
+{
+	TVector<VarType> tmp(*this);
+	for (int i = 0; i < size; i++) {
+		tmp.elems[i] += c;
+	}
+	return tmp;
+}
 
- template<typename VarType>
- TVector<VarType> TVector<VarType>::operator-(VarType c)
- {
-	 TVector<VarType> tmp(*this);
-	 for (int i = 0; i < size; i++) {
-		 tmp.elems[i] -= c;
-	 }
-	 return tmp;
- }
+template<typename VarType>
+TVector<VarType> TVector<VarType>::operator-(VarType c)
+{
+	TVector<VarType> tmp(*this);
+	for (int i = 0; i < size; i++) {
+		tmp.elems[i] -= c;
+	}
+	return tmp;
+}
 
- template<typename VarType>
- TVector<VarType> TVector<VarType>::operator*(VarType c)
- {
-	 TVector<VarType> tmp(*this);
-	 for (int i = 0; i < size; i++) {
-		 tmp.elems[i] *= c;
-	 }
-	 return tmp;
- }
+template<typename VarType>
+TVector<VarType> TVector<VarType>::operator*(VarType c)
+{
+	TVector<VarType> tmp(*this);
+	for (int i = 0; i < size; i++) {
+		tmp.elems[i] *= c;
+	}
+	return tmp;
+}
 
- template<typename VarType>
- TVector<VarType> TVector<VarType>::operator+(const TVector<VarType>& V)
- {
-	 if (size != V.size) throw (std::string)"Different dimension";
-	 TVector<VarType> tmp(*this);
-	 for (int i = 0; i < size; i++) {
-		 tmp.elems[i] += V.elems[i];
-	 }
-	 return tmp;
- }
+template<typename VarType>
+TVector<VarType> TVector<VarType>::operator+(const TVector<VarType>& V)
+{
+	if (size != V.size) throw (std::string)"Different dimension";
+	TVector<VarType> tmp(*this);
+	for (int i = 0; i < size; i++) {
+		tmp.elems[i] += V.elems[i];
+	}
+	return tmp;
+}
 
- template<typename VarType>
- TVector<VarType> TVector<VarType>::operator-(const TVector<VarType>& V)
- {
-	 if (size != V.size) throw (std::string)"Different dimension";
-	 TVector<VarType> tmp(*this);
-	 for (int i = 0; i < size; i++) {
-		 tmp.elems[i] -= V.elems[i];
-	 }
-	 return tmp;
- }
+template<typename VarType>
+TVector<VarType> TVector<VarType>::operator-(const TVector<VarType>& V)
+{
+	if (size != V.size) throw (std::string)"Different dimension";
+	TVector<VarType> tmp(*this);
+	for (int i = 0; i < size; i++) {
+		tmp.elems[i] -= V.elems[i];
+	}
+	return tmp;
+}
 
- template<typename VarType>
- VarType TVector<VarType>::operator*(const TVector<VarType>& V)
- {
-	 if (size != V.size) throw (std::string)"Different dimension";
-	 VarType res = 0;
-	 for (int i = 0; i < size; i++) {
-		 res += elems[i] * V.elems[i];
-	 }
- }
+template<typename VarType>
+VarType TVector<VarType>::operator*(const TVector<VarType>& V)
+{
+	if (size != V.size) throw (std::string)"Different dimension";
+	VarType res = 0;
+	for (int i = 0; i < size; i++) {
+		res += elems[i] * V.elems[i];
+	}
+	return res;
+}
 
- template<typename VarType>
- TVector<VarType>& TVector<VarType>::operator=(const TVector<VarType>& V)
- {
-	 if (elems == V.elems) throw (std::string)"Self-assignment";
-	 size = V.size;
-	 startIndex = V.startIndex;
-	 delete[] elems;
-	 elems = new VarType[size];
-	 for (int i = 0; i < size; i++) {
-		 elems[i] = V.elems[i];
-	 }
-	 return *this;
- }
+template<typename VarType>
+TVector<VarType>& TVector<VarType>::operator=(const TVector<VarType>& V)
+{
+	if (elems == V.elems) throw (std::string)"Self-assignment";
+	size = V.size;
+	startIndex = V.startIndex;
+	delete[] elems;
+	elems = new VarType[size];
+	for (int i = 0; i < size; i++) {
+		elems[i] = V.elems[i];
+	}
+	return *this;
+}
 
- template<typename VarType>
- VarType TVector<VarType>::Length() const
- {
-	 VarType res = 0;
-	 for (int = 0; i < size; i++) res += elems[i] * elems[i];
-	 return sqrt(res);
- }
+template<typename VarType>
+VarType TVector<VarType>::Length() const
+{
+	VarType res = 0;
+	for (int i = 0; i < size; i++) res += elems[i] * elems[i];
+	return sqrt(res);
+}
 
- template<typename VarType>
- int TVector<VarType>::Size() const
- {
-	 return size;
- }
+template<typename VarType>
+int TVector<VarType>::Size() const
+{
+	return size;
+}
 
- template<typename VarType>
- int TVector<VarType>::StartIndex() const
- {
-	 return startIndex;
- }
+template<typename VarType>
+int TVector<VarType>::StartIndex() const
+{
+	return startIndex;
+}
+
+template<typename VarType>
+void TVector<VarType>::Fill(VarType from, VarType to)
+{
+	if (size <= 0) throw (std::string)"Invalid vector";
+	for (int i = 0; i < size; i++) {
+		VarType randValue(rand());
+		VarType randOperand = randValue * (to - from) / VarType(RAND_MAX);
+		elems[i] = randOperand + from;
+	}
+}
+
+template<typename VarType>
+const VarType& TVector<VarType>::operator[](int index) const
+{
+	if (index - startIndex >= size) throw (std::string)"Wrong index";
+	return elems[index - startIndex];
+}
+
+template<typename VarType>
+VarType& TVector<VarType>::operator[](int index) {
+	if (index - startIndex >= size) throw (std::string)"Wrong index";
+	return elems[index - startIndex];
+}
