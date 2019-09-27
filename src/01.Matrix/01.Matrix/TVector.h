@@ -83,6 +83,7 @@ template<typename VarType>
 bool TVector<VarType>::operator==(const TVector<VarType>& V) const
 {
 	if (size != V.size) return false;
+	if (startIndex != V.startIndex) return false;
 	for (int i = 0; i < size; i++) {
 		if (elems[i] != V.elems[i]) return false;
 	}
@@ -93,6 +94,7 @@ template<typename VarType>
 bool TVector<VarType>::operator!=(const TVector<VarType>& V) const
 {
 	if (size != V.size) return true;
+	if (startIndex != V.startIndex) return true;
 	for (int i = 0; i < size; i++) {
 		if (elems[i] != V.elems[i]) return true;
 	}
