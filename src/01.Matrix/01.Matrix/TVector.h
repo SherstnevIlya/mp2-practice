@@ -30,8 +30,11 @@ public:
 	friend std::ostream& operator << (std::ostream& s, const TVector& v) {
 		if (v.size <= 0) throw (std::string)"Wrong dimension";
 		s << "[";
+		for (int i = 0; i < v.StartIndex(); i++) {
+			s << std::setw(5) << std::right << ' ';
+		}
 		for (int i = 0; i < v.size; i++) {
-			s << v.elems[i] << ' ';
+			s << std::setw(5) << std::right << v.elems[i] << ' ';
 		}
 		s << "]";
 		return s;
@@ -82,8 +85,7 @@ TVector<VarType>::~TVector()
 template<typename VarType>
 bool TVector<VarType>::operator==(const TVector<VarType>& V) const
 {
-	if (size != V.size) return false;
-	if (startIndex != V.startIndex) return false;
+	if ((size != V.size) && (startIndex != V.startIndex)) return false;
 	for (int i = 0; i < size; i++) {
 		if (elems[i] != V.elems[i]) return false;
 	}
@@ -93,12 +95,8 @@ bool TVector<VarType>::operator==(const TVector<VarType>& V) const
 template<typename VarType>
 bool TVector<VarType>::operator!=(const TVector<VarType>& V) const
 {
-	if (size != V.size) return true;
-	if (startIndex != V.startIndex) return true;
-	for (int i = 0; i < size; i++) {
-		if (elems[i] != V.elems[i]) return true;
-	}
-	return false;
+	if (*this == V) return false;
+	return true;
 }
 
 template<typename VarType>
@@ -134,7 +132,7 @@ TVector<VarType> TVector<VarType>::operator*(VarType c)
 template<typename VarType>
 TVector<VarType> TVector<VarType>::operator+(const TVector<VarType>& V)
 {
-	if (size != V.size) throw (std::string)"Different dimension";
+	if ((size != V.size) && (startIndex != V.startIndex)) throw (std::string)"Different dimension";
 	TVector<VarType> tmp(*this);
 	for (int i = 0; i < size; i++) {
 		tmp.elems[i] += V.elems[i];
@@ -145,7 +143,7 @@ TVector<VarType> TVector<VarType>::operator+(const TVector<VarType>& V)
 template<typename VarType>
 TVector<VarType> TVector<VarType>::operator-(const TVector<VarType>& V)
 {
-	if (size != V.size) throw (std::string)"Different dimension";
+	if ((size != V.size) && (startIndex != V.startIndex)) throw (std::string)"Different dimension";
 	TVector<VarType> tmp(*this);
 	for (int i = 0; i < size; i++) {
 		tmp.elems[i] -= V.elems[i];
@@ -156,7 +154,7 @@ TVector<VarType> TVector<VarType>::operator-(const TVector<VarType>& V)
 template<typename VarType>
 VarType TVector<VarType>::operator*(const TVector<VarType>& V)
 {
-	if (size != V.size) throw (std::string)"Different dimension";
+	if ((size != V.size) && (startIndex != V.startIndex)) throw (std::string)"Different dimension";
 	VarType res = 0;
 	for (int i = 0; i < size; i++) {
 		res += elems[i] * V.elems[i];

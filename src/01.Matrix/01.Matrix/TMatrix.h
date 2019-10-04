@@ -8,7 +8,7 @@ public:
 	TMatrix(int size = 10);
 	TMatrix(const TMatrix<VarType>&);
 	TMatrix(const TVector<TVector<VarType>>&);
-	~TMatrix();
+	~TMatrix() = default;
 
 	bool operator==(const TMatrix&)const;
 	bool operator!=(const TMatrix&)const;
@@ -47,29 +47,12 @@ TMatrix<VarType>::TMatrix(int size) : TVector<TVector<VarType>>(size)
 }
 
 template<typename VarType>
-TMatrix<VarType>::TMatrix(const TMatrix<VarType>& m)
+TMatrix<VarType>::TMatrix(const TMatrix<VarType>& m) : TVector<TVector<VarType>>(m)
 {
-	this->size = m.size;
-	this->elems = new TVector<VarType>[m.size];
-	for (int i = 0; i < m.size; i++) this->elems[i] = m.elems[i];
 }
 
 template<typename VarType>
-TMatrix<VarType>::TMatrix(const TVector<TVector<VarType>>& v) : TVector<TVector<VarType>>(v.Size())
-{
-	int initSize = v[0].Size();
-	for (int i = 0; i < initSize; i++)
-		if (v[i].Size() != initSize - i) throw (std::string)"Not able to convert";
-	for (int i = 0; i < initSize; i++)
-	{
-		this->elems[i] = TVector<VarType>(initSize - i, i);
-		for (int j = 0; j < this->size - i; j++)
-			this->elems[i][j] = v[i][j];
-	}
-}
-
-template<typename VarType>
-TMatrix<VarType>::~TMatrix()
+TMatrix<VarType>::TMatrix(const TVector<TVector<VarType>>& v) : TVector<TVector<VarType>>(v)
 {
 }
 
@@ -96,7 +79,7 @@ bool TMatrix<VarType>::operator!=(const TMatrix<VarType>& m) const
 template<typename VarType>
 TMatrix<VarType>& TMatrix<VarType>::operator=(const TMatrix<VarType>& m)
 {
-	if (this == &m) return *this;
+	if (*this == m) return *this;
 	if (this->size != m.size) {
 		this->size = m.size;
 		delete[] this->elems;

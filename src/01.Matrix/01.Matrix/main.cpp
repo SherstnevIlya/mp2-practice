@@ -20,27 +20,20 @@ void main() {
 		cout << "Trying to create invalid matrix: ";
 		TMatrix<double> InvalidMatrix(-4);
 	}
-	catch (std::string k) { cout << k << endl; }
-
-	/*try {
-		cout << "Trying to convert Vector<Vector> to Matrix: ";
-		TMatrix<int> ConvertedMatrix(c);
-		cout << ConvertedMatrix;
-	}
 	catch (std::string k) { cout << k << endl; }*/
 
 	try {
 		cout << "Trying to convert Vector<Vector> to Matrix: " << endl;
-		TVector<int> v1(3);
-		TVector<int> v2(2);
-		TVector<int> v3(1);
+		TVector<int> v1(3, 0);
+		TVector<int> v2(2, 1);
+		TVector<int> v3(1, 2);
 		cin >> v1 >> v2 >> v3;
 		TVector<TVector<int>> v(3);
 		v[2] = v3;
 		v[1] = v2;
 		v[0] = v1;
 		TMatrix<int> ConvertedMatrix(v);
-		cout << ConvertedMatrix;
+		cout << "Converted matrix" << endl << ConvertedMatrix;
 	}
 	catch (std::string k) { cout << k << endl; }
 	
@@ -128,4 +121,7 @@ void main() {
 		cout << (a * d) << endl;
 	}
 	catch (std::string k) { cout << k << endl; }
+	
+	int t;
+	cin >> t;
 }
