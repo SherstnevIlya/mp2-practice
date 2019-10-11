@@ -21,12 +21,13 @@ public:
 	TMatrix operator*(const TMatrix<VarType>&);
 
 	void Fill(VarType, VarType);
+	TMatrix Transponirovat();
 	VarType Determinant();
 
 	friend std::ostream& operator<<(std::ostream& s, const TMatrix& m) {
 		if (m.size <= 0) throw (std::string)"Wrong dimension";
 		for (int i = 0; i < m.size; i++) 
-			s << ' ' << m.elems[i] << ' ' << '\n';
+			s << m.elems[i] << '\n';
 		return s;
 	}
 	friend std::istream& operator>>(std::istream& s, TMatrix& m) {
@@ -69,11 +70,8 @@ bool TMatrix<VarType>::operator==(const TMatrix<VarType>& m) const
 template<typename VarType>
 bool TMatrix<VarType>::operator!=(const TMatrix<VarType>& m) const
 {
-	if (this->size != m.size) return true;
-	for (int i = 0; i < this->size; i++) {
-		if (this->elems[i] != m.elems[i]) return true;
-	}
-	return false;
+	if (*this == m) return false;
+	return true;
 }
 
 template<typename VarType>
@@ -166,6 +164,26 @@ void TMatrix<VarType>::Fill(VarType from, VarType to)
 {
 	if (this->size == 0) return;
 	for (int i = 0; i < this->size; i++) this->elems[i].Fill(from, to);
+}
+
+template<typename VarType>
+TMatrix<VarType> TMatrix<VarType>::Transponirovat()
+{
+	TMatrix<VarType> temp(*this);
+	for (int i = 0; i < temp.size / 2; i++) {
+		TVector<VarType> tmp(temp[i]);
+		temp[i] = temp[temp.size - i - 1];
+		temp[temp.size - i - 1] = tmp;
+	}
+	for (int i = 0; i < temp.size; i++) {
+		temp[i].SetSI(0);
+	}
+	for (int i = 0; i < temp.size; i++) {
+		for (int j = i; j < temp.size; j++) {
+			temp[j][i] = (*this)[i][j];
+		}
+	}
+	return temp;
 }
 
 template<typename VarType>

@@ -10,7 +10,7 @@ void main() {
 	a.Fill(0, 100);
 	d.Fill(0, 100);
 	
-	/*cout << "Enter matrix E: " << endl;
+	cout << "Enter matrix E: " << endl;
 	try {
 		cin >> e;
 	}
@@ -20,7 +20,7 @@ void main() {
 		cout << "Trying to create invalid matrix: ";
 		TMatrix<double> InvalidMatrix(-4);
 	}
-	catch (std::string k) { cout << k << endl; }*/
+	catch (std::string k) { cout << k << endl; }
 
 	try {
 		cout << "Trying to convert Vector<Vector> to Matrix: " << endl;
@@ -34,6 +34,7 @@ void main() {
 		v[0] = v1;
 		TMatrix<int> ConvertedMatrix(v);
 		cout << "Converted matrix" << endl << ConvertedMatrix;
+		cout << "Transponirovannaya matrix" << endl << ConvertedMatrix.Transponirovat();
 	}
 	catch (std::string k) { cout << k << endl; }
 	

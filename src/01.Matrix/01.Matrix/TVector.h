@@ -24,6 +24,7 @@ public:
 	VarType Length()const;
 	int Size()const;
 	int StartIndex()const;
+	void SetSI(size_t);
 
 	void Fill(VarType, VarType);
 
@@ -31,10 +32,10 @@ public:
 		if (v.size <= 0) throw (std::string)"Wrong dimension";
 		s << "[";
 		for (int i = 0; i < v.StartIndex(); i++) {
-			s << std::setw(5) << std::right << ' ';
+			s << '\t';
 		}
 		for (int i = 0; i < v.size; i++) {
-			s << std::setw(5) << std::right << v.elems[i] << ' ';
+			s << std::right << v.elems[i] << '\t';
 		}
 		s << "]";
 		return s;
@@ -165,11 +166,13 @@ VarType TVector<VarType>::operator*(const TVector<VarType>& V)
 template<typename VarType>
 TVector<VarType>& TVector<VarType>::operator=(const TVector<VarType>& V)
 {
-	if (elems == V.elems) throw (std::string)"Self-assignment";
-	size = V.size;
+	if (*this == V) throw (std::string)"Self-assignment";
+	if (this->size != V.size) {
+		size = V.size;
+		delete[] elems;
+		elems = new VarType[size];
+	}
 	startIndex = V.startIndex;
-	delete[] elems;
-	elems = new VarType[size];
 	for (int i = 0; i < size; i++) {
 		elems[i] = V.elems[i];
 	}
@@ -179,9 +182,7 @@ TVector<VarType>& TVector<VarType>::operator=(const TVector<VarType>& V)
 template<typename VarType>
 VarType TVector<VarType>::Length() const
 {
-	VarType res = 0;
-	for (int i = 0; i < size; i++) res += elems[i] * elems[i];
-	return sqrt(res);
+	return sqrt((*this) * (*this));
 }
 
 template<typename VarType>
@@ -194,6 +195,12 @@ template<typename VarType>
 int TVector<VarType>::StartIndex() const
 {
 	return startIndex;
+}
+
+template<typename VarType>
+void TVector<VarType>::SetSI(size_t t)
+{
+	startIndex = t;
 }
 
 template<typename VarType>
