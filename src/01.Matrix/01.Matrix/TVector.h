@@ -166,7 +166,7 @@ VarType TVector<VarType>::operator*(const TVector<VarType>& V)
 template<typename VarType>
 TVector<VarType>& TVector<VarType>::operator=(const TVector<VarType>& V)
 {
-	if (*this == V) throw (std::string)"Self-assignment";
+	if (*this == V) return *this;
 	if (this->size != V.size) {
 		size = V.size;
 		delete[] elems;

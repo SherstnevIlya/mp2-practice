@@ -82,6 +82,12 @@ void main() {
 	catch (std::string k) { cout << k << endl; }
 
 	try {
+		cout << "F[2][0] = ";
+		cout << f[0][2] << endl;
+	}
+	catch (std::string k) { cout << k << endl; }
+
+	try {
 		cout << "F[100][100] = ";
 		cout << f[100][100] << endl;
 	}
