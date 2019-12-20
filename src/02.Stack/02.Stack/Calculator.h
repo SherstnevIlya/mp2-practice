@@ -14,17 +14,17 @@ public:
 	};
 
 	static std::string ToPostfixForm(const std::string&);
-	static double Calculate(std::string, Operand*);
-	static void Fill(Operand*&, std::string);
+	static double Calculate(const std::string&, Operand*);
+	static void Fill(Operand*&, const std::string&);
 	static bool IsNumber(Operand*);
 
 private:
 	enum class TypeSymbol {
 		operation, operand, number, space, openingBracket, closingBracket, invalid
 	};
-	static void AddUnique(std::string, Operand*&);
-	static bool IsVarExist(std::string, Operand*);
-	static double GetValue(std::string, Operand*);
+	static void AddUnique(const std::string&, Operand*&);
+	static bool IsVarExist(const std::string&, Operand*);
+	static double GetValue(const std::string&, Operand*);
 	static TypeSymbol GetType(const char);
 	static int PriorityOperations(const char);
 };

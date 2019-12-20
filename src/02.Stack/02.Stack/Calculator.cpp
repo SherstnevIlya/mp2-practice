@@ -1,6 +1,6 @@
 #include "Calculator.h"
 
-void Calculator::AddUnique(std::string op, Calculator::Operand*& head) {
+void Calculator::AddUnique(const std::string& op, Calculator::Operand*& head) {
 	if (!head) {
 		head = new Operand;
 		head->name = op;
@@ -18,7 +18,7 @@ void Calculator::AddUnique(std::string op, Calculator::Operand*& head) {
 	}
 }
 
-bool Calculator::IsVarExist(std::string k, Calculator::Operand* tmp) {
+bool Calculator::IsVarExist(const std::string& k, Calculator::Operand* tmp) {
 	while (tmp != nullptr) {
 		if (tmp->name == k) 
 			return true;
@@ -27,7 +27,7 @@ bool Calculator::IsVarExist(std::string k, Calculator::Operand* tmp) {
 	return false;
 }
 
-void Calculator::Fill(Calculator::Operand*& head, std::string postfixForm) {
+void Calculator::Fill(Calculator::Operand*& head, const std::string& postfixForm) {
 	std::string name = "";
 	char lastSymbol = '(';
 	TypeSymbol type, ltype;
@@ -45,7 +45,7 @@ void Calculator::Fill(Calculator::Operand*& head, std::string postfixForm) {
 	}
 }
 
-double Calculator::GetValue(std::string wtf, Calculator::Operand* head) {
+double Calculator::GetValue(const std::string& wtf, Calculator::Operand* head) {
 	Operand* tmp = head;
 	while (tmp != nullptr) {
 		if (tmp->name == wtf)
@@ -230,7 +230,7 @@ std::string Calculator::ToPostfixForm(const std::string& expression)
 	return postfixForm;
 }
 
-double Calculator::Calculate(std::string postfixForm, Calculator::Operand* head)
+double Calculator::Calculate(const std::string& postfixForm, Calculator::Operand* head)
 {
 	size_t sizeForm = postfixForm.size();
 	TStack<double> calc(sizeForm);
