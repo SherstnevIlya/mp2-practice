@@ -22,18 +22,9 @@ void main() {
 		std::cout << k << std::endl;
 		return;
 	}
-	Calculator::Operand* tmp = head;
-	while (tmp != nullptr) { // Fill
-		if (!Calculator::IsNumber(tmp)) {
-			std::cout << tmp->name << " = ";
-			std::cin >> tmp->value;
-		}
-		tmp = tmp->next;
-	}
 	try {
 		double res = Calculator::Calculate(postExp, head);
 		std::cout << "Result: " << res << std::endl;
-		//head
 	}
 	catch (std::string k) {
 		std::cout << k << std::endl;

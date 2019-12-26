@@ -14,9 +14,8 @@ public:
 	};
 
 	static std::string ToPostfixForm(const std::string&);
-	static double Calculate(const std::string&, Operand*);
+	static double Calculate(const std::string&, Operand*&);
 	static void Fill(Operand*&, const std::string&);
-	static bool IsNumber(Operand*);
 
 private:
 	enum class TypeSymbol {
@@ -27,4 +26,5 @@ private:
 	static double GetValue(const std::string&, Operand*);
 	static TypeSymbol GetType(const char);
 	static int PriorityOperations(const char);
+	static bool IsNumber(Operand*);
 };
