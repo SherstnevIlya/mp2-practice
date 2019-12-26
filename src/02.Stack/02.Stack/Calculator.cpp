@@ -300,15 +300,7 @@ double Calculator::Calculate(const std::string& postfixForm, Calculator::Operand
 	catch (std::string k) {
 		throw k;
 	}
-	while (head->next != nullptr) {
-		Operand* tmp = head;
-		while (tmp->next->next != nullptr) {
-			tmp = tmp->next;
-		}
-		delete tmp->next;
-		tmp->next = nullptr;
-	}
-	delete head;
+	
 	if (calc.Empty())
 		return res;
 	else

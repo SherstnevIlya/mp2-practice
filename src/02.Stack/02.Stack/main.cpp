@@ -25,8 +25,18 @@ void main() {
 	try {
 		double res = Calculator::Calculate(postExp, head);
 		std::cout << "Result: " << res << std::endl;
+
 	}
 	catch (std::string k) {
 		std::cout << k << std::endl;
 	}
+	while (head->next != nullptr) {
+		Calculator::Operand* tmp = head;
+		while (tmp->next->next != nullptr) {
+			tmp = tmp->next;
+		}
+		delete tmp->next;
+		tmp->next = nullptr;
+	}
+	delete head;
 }
