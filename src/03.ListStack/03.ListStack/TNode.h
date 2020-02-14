@@ -40,7 +40,7 @@ TNode<TKey, TData>::TNode(const TNode<TKey, TData>& node) {
 		*pData = *node.pData;
 	}
 	else pData = nullptr;
-	pNext = nullptr;
+	pNext = node.pNext;
 	key = node.key;
 }
 

@@ -40,7 +40,20 @@ bool TListStack<V>::Empty() const {
 
 template<typename V>
 bool TListStack<V>::Full() const {
-	return false;
+	try
+	{
+		TNode<V, void*> *node = new TNode<V, void*>();
+		if (node == nullptr)
+		{
+			return true;
+		}
+		delete node;
+		return false;
+	}
+	catch (...)
+	{
+		return false;
+	}
 }
 
 template<typename V>

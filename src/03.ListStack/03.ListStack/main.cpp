@@ -101,4 +101,6 @@ void main() {
 	testList();
 	std::cout << "Testing stack: " << std::endl;
 	testStack();
+	int k;
+	std::cin >> k;
 }
